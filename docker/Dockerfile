@@ -105,6 +105,7 @@ COPY --from=builder /app/dist/change-password /usr/local/bin/change-password
 
 # Copy migrations, static files and templates
 COPY --from=builder /app/internal/database/migrations ./internal/database/migrations
+COPY --from=builder /app/internal/view/static ./internal/view/static
 
 # Create a non-root user
 RUN groupadd -r pgbackweb && useradd -r -g pgbackweb -d /app -s /bin/bash pgbackweb && \
@@ -124,7 +125,7 @@ goose -dir ./internal/database/migrations postgres "${PBW_POSTGRES_CONN_STRING}"
 echo "Migrations completed"\n\
 \n\
 # Start the application\n\
-exec /usr/local/bin/app' > /docker-entrypoint.sh && \
-    chmod +x /docker-entrypoint.sh
+exec /usr/local/bin/app' > /app/docker-entrypoint.sh && \
+    chmod +x /app/docker-entrypoint.sh
 
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["/app/docker-entrypoint.sh"]

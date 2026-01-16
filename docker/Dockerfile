@@ -105,8 +105,6 @@ COPY --from=builder /app/dist/change-password /usr/local/bin/change-password
 
 # Copy migrations, static files and templates
 COPY --from=builder /app/internal/database/migrations ./internal/database/migrations
-COPY --from=builder /app/static ./static
-COPY --from=builder /app/templates ./templates
 
 # Create a non-root user
 RUN groupadd -r pgbackweb && useradd -r -g pgbackweb -d /app -s /bin/bash pgbackweb && \
